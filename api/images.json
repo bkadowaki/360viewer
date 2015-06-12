@@ -1,16 +1,41 @@
-["http://www.mathieusavard.info/threesixty/MAT_1450.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1451.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1452.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1453.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1454.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1455.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1456.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1457.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1458.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1459.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1460.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1461.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1462.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1463.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1464.jpg",
-"http://www.mathieusavard.info/threesixty/MAT_1465.jpg"]
+{
+	"Car1": [
+		{
+			"small": []
+		},
+		{
+			"medium": [
+			"http://www.mathieusavard.info/threesixty/MAT_1450.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1451.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1452.jpg",			
+			"http://www.mathieusavard.info/threesixty/MAT_1453.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1454.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1455.jpg",			
+			"http://www.mathieusavard.info/threesixty/MAT_1456.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1457.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1458.jpg",			
+			"http://www.mathieusavard.info/threesixty/MAT_1459.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1460.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1461.jpg",			
+			"http://www.mathieusavard.info/threesixty/MAT_1462.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1463.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1464.jpg",
+			"http://www.mathieusavard.info/threesixty/MAT_1465.jpg"
+			]
+		},		
+		{
+			"large": []
+		}
+	],
+	"Car2": [
+		{
+			"small": []
+		},
+		{
+			"medium": ["http://secondmedium1","http://secondmedium2","http://secondmedium3"]
+		},		
+		{
+			"large": []
+		}
+	]
+}

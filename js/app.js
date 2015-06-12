@@ -1,109 +1,93 @@
-(function() {
+// OPEN ANONYMOUS FUNCTION
+var imageObject;
+(function(){
 
-	var threesixty_tag = document.createElement("script");
-	threesixty_tag.setAttribute("type","text/javascript");
-	threesixty_tag.setAttribute("src",
-	        "js/jquery.threesixty.js");
+	// OPEN main()
+	function main() {
+		var imageArr = [];
+		var individualImages = false;
+		// grab JSON object of images from API
+		$.getJSON('api/images.json').done(function(data) {
+    		console.log(data);
+    		imageObject = data;
 
-	if (threesixty_tag.readyState){
-		threesixty_tag.onreadystatechange = function(){
-			if (this.threesixty_tag == "complete" || this.threesixty_tag == "loaded") {
-				scriptLoadHandler();
+    		// call loadTemplate
+    		loadTemplate();
 			}
-		};
-	} else {
-		threesixty_tag.onload = scriptLoadHandler;
-	}
-  // Try to find the head, otherwise default to the documentElement
-  (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(threesixty_tag);
+		);
 
-	function scriptLoadHandler() {
-	    // Call our main function
-	    main(); 
+		// OPEN loadTemplate()
+		function loadTemplate(){
+	    // load widget template
+	 		$('#widget-container').load('360widget/widget.html', function(){
+	 			// once template loaded, write images to page with loop
+	 			create360Viewer();
+	 		});
+ 		}
+ 		// END loadTemplate()
+
+ 		// OPEN create360Viewer: assigning imageArr to threesixty viewer
+ 		function create360Viewer(){
+ 			imageArr = imageObject.Car1[1].medium;
+			$("#click360").threesixty({
+				images:imageArr, method:"click","cycle":10, direction:"forward", sensibility: 1});
+			createImageElements();
+ 		};
+ 		// END create360Viewer
+
+ 		// OPEN createImageElements(): we will create a parent div and child image element for each item in the imageArr array, setting the src to each index
+ 		function createImageElements(){
+ 			for (var i = 0; i<imageArr.length;i++){
+ 				$('#thumbsContainer360').append('<image src='+imageArr[i]+' class="innerImage360 imageThumb-'+i+'" height="60" width="60" />')
+ 			}
+ 			// settings for slick carousel
+ 			$(".slick-container").slick({
+ 				infinite: true,
+ 				speed: 300,
+ 				slidesToShow: 6,
+ 				slidesToScroll: 1
+ 			});
+
+ 			assignEventHandler();
+ 		};
+ 		// END createImageElements()
+
+ 		// OPEN assignEventHandler(): putting .innerImage360 into a new jQuery object, and then assigning click event handler
+ 		function assignEventHandler(){
+ 			var newInnerImage360 = $(".innerImage360");
+ 			$(newInnerImage360).each(function(index){
+ 				$(this).click(function(){
+ 					$('#click360').replaceWith('<img src="'+imageArr[index]+'" id="click360" class="click360-class" height="314" width="100%" />');
+ 					$('#infoBar360').html(index+' of '+imageArr.length).append('<div class="fullscreenBtn"><a href="'+imageArr[index]+'" class="fullscreenAnchor"><i class="fa fa-arrows-alt fa-2x"></i></a></div>');
+ 					$('#marqueeContainer360').append('<div class="backTo360"><i class="fa fa-undo"></i><br></div>');
+ 					individualImages = true;
+ 					createBackTo360Btn();
+ 				});
+ 			});
+ 		};
+ 		// END assignEventHandler()
+
+ 		// OPEN createBackTo360Btn(): re-assign newly created .backTo360 div to a new jQuery object--backTo360Btn--then assign click handler, and re-create 360 viewer
+ 		function createBackTo360Btn(){
+ 			var backTo360Btn = $('.backTo360');
+ 			$(backTo360Btn).click(function(){
+ 				$('.backTo360').html(" ");
+
+ 				$('#infoBar360').html("360 Viewer");
+
+				$("#click360").threesixty({
+					images:imageArr, method:"click","cycle":10, direction:"forward", sensibility: 1}).css("cursor","alias");
+ 			});
+ 		};
+ 		// END createBackTo360Btn()
+ 		
 	};
-
-	/******** Our main function ********/
-	function main() { 
-		// declare main() var grabbedData which will = array of images
-		var grabbedData;
-    jQuery(document).ready(function($) { 
-			$.ajax({ 
-		    type: 'GET', 
-		    url: 'api/images.json', 
-		    data: JSON.stringify({ get_param: 'value' }), 
-		    dataType: 'json',
-		    success: function (data) { 
-		    	grabbedData = data;
-		    } 
-			});	    	
-    
-    });
-
-    // load widget template
- 		$("#widget-container").load("360widget/widget.html", function(){
-
- 			// set grabbedData to threesixty plugin
-			$("#click").threesixty({images:grabbedData, method:'click', 'cycle':10, direction:'forward', sensibility: 1});
-
-			for (var i = 0; i<grabbedData.length-1; i++){
-				$('#thumbs-container').append('<div class="thumbs"><image src='+grabbedData[i]+' class="inner-image" height="60" width="60"/></div>');
-			};
-
-			$('.slick-container').slick({
-        // dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 8,
-        slidesToScroll: 1,
-        responsive: [{
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 6,
-                slidesToScroll: 1,
-                // centerMode: true,
-
-            }
-
-        }, {
-            breakpoint: 800,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 2,
-                dots: true,
-                infinite: true,
-
-            }
+	main();
+	// END AND CALL main()
+})();	
+// END ANONYMOUS FUNCTION
 
 
-        }, {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2,
-                dots: true,
-                infinite: true,
-                
-            }
-        }, {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                dots: true,
-                infinite: true,
-                autoplay: true,
-                autoplaySpeed: 2000,
-            }
-        }]
-	    });
-  	});
-	}
-	// end main()
-
-})(); // call our anonymous function immediately
-
-
-// slick start
 /*
      _ _      _       _
  ___| (_) ___| | __  (_)___
