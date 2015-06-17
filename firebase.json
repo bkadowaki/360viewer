@@ -1,5 +1,5 @@
 {
-  "firebase": "360viewer",
+  "firebase": "viewer360",
   "public": ".",
   "ignore": [
     "firebase.json",

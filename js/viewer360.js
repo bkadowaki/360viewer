@@ -7,13 +7,34 @@ var imageArr = [];
 	function main() { 
 		var imgId;
 		var viewer360;
-		// grab JSON object of images from API
-		$.getJSON('api/images.json').done(function(data) {
-    		console.log(data);
-    		imageObject = data;
-    		// call functionStack
-    		functionStack();
-		});
+
+		// grab params for carId
+		function grabParams(){
+			var vars = [], hash;
+			var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+				for(var i = 0; i < hashes.length; i++)
+				{
+				   hash = hashes[i].split('=');
+				   vars.push(hash[0]);
+				   vars[hash[0]] = hash[1];
+				}
+			console.log("Vars are " + vars);
+			console.log("Hash is " + hash);
+			console.log("Hashes are " + hashes);
+			grabJson(hash);
+		};
+		grabParams();
+
+		function grabJson(idCar){
+			// grab JSON object of images from API
+			// ** change the 6 so idCar once in production
+			$.getJSON('http://ec2-52-25-251-163.us-west-2.compute.amazonaws.com:8080/Sparkilabs-webApp/ResponseJSON?carID='+6).done(function(data) {
+	    		console.log(data);
+	    		imageObject = data;
+	    		// call functionStack
+	    		functionStack();
+			});
+		};
 
 		function functionStack(){
 			createImageElement();
@@ -22,12 +43,16 @@ var imageArr = [];
 		};
 
  		function createImageElement(){
- 			var imageArr = imageObject.Car1[1].medium.join();
- 			viewer360 = '<img src="'+imageObject.Car1[1].medium[0]+'" id="viewer" class="reel" height="314" width="500" data-speed="0" data-frames="27" data-wheelable="true" data-loops="false" data-reach="2" data-delay="1" data-images='+
+ 			for (var i = 0; i<imageObject.images.medium.length;i++){
+
+ 				imageArr.push(imageObject.images.medium[i].url);
+ 			}
+
+ 			viewer360 = '<img src="'+imageObject.images.medium[0].url+'" id="viewer" class="reel" height="314" width="500" data-speed="0" data-frames="27" data-wheelable="true" data-loops="false" data-reach="2" data-delay="1" data-images='+
  				imageArr+'>' +
  				'<img src="http://static1.squarespace.com/static/5535915ee4b052e5fc121331/t/557c6cece4b0d0b21b85c686/1434217708714/?format=1500w" class="reel-annotation far" id="logo" for-data="viewer" style="height:50px;width:150px;position:absolute;top:0;right:0;" data-start="1" data-end="27"/>'+
- 				'<div class="reel-annotation far" id="info-bar" for-data="viewer" style="height:30px;width:100%;position:absolute;bottom:0;background-color:#000;opacity:0.8;color: #FFFFFF;text-align:center;padding-top:10px;" data-start="1" data-end="27">360 Viewer</div>'+ 
- 				'<a class="reel-annotation near" style="font-size:10px;color:white;background-color:blue;text-decoration:none"id="headlights" data-for="viewer" data-x="300" data-y="200" data-start="1" data-end="2" href="http://www.sparkilabs.com/">Awesome Headlights</a>' +
+ 				'<div class="reel-annotation far" id="info-bar" for-data="viewer" style="height:30px;width:100%;position:absolute;bottom:0;background: rgba(0,0,0,0.4);color:#FFFFFF;text-align:center;padding-top:10px;" data-start="1" data-end="27">360 Viewer</div>'+ 
+ 				'<a class="reel-annotation near" style="font-size:10px;color:white;background-color:blue;text-decoration:none"id="headlights" data-for="viewer" data-x="300" data-y="200" data-start="1" data-end="2" href="http://www.sparkilabs.com/">Headlights</a>' +
  				'<span class="reel-annotation far" style="font-size:10px;color:white;background-color:red;text-decoration:none" data-for="viewer" id="wheels" data-end="6" data-x="120" data-y="120" data-start="4">Chrome Wheels</span>' +
  					'<span class="reel-annotation near" style="font-size:10px; color:white; background-color:red; text-decoration:none;" id="trunk" data-for="viewer" data-x="120" data-y="120" data-start="14" data-end="15">Full Trunk</span>'
  			$('#viewer-container').append(viewer360);
@@ -35,7 +60,6 @@ var imageArr = [];
  		};
 
  		function createCarousel(){
- 			imageArr = imageObject.Car1[1].medium;
  			for (imgId = 0; imgId<imageArr.length;imgId++){
  				$('#thumbs-container').append('<image src='+imageArr[imgId]+' class="inner-thumbs imageThumb-'+imgId+'" height="60" width="60"/>');
  			}
@@ -55,8 +79,8 @@ var imageArr = [];
  			$(".inner-thumbs").each(function(imgId){
  				$(this).click(function(){
  					$(this).attr("src",function(i, val){
- 						$("#viewer-container").html('<img src="'+val+'" id="click360" class="click360-class" height="314" width="500" /><img src="http://static1.squarespace.com/static/5535915ee4b052e5fc121331/t/557c6cece4b0d0b21b85c686/1434217708714/?format=1500w" class="reel-annotation far" id="logo" for-data="viewer" style="height:50px;width:150px;position:absolute;top:0;right:0;" data-start="1" data-end="27"/><div id="info-bar" style="height:30px;width:100%;position:absolute;bottom:0;background-color:#000;opacity:0.8;color:#FFFFFF;padding-top:10px;"></div>');
- 					$('#info-bar').append('<div class="fullscreenBtn"><a href="'+val+'" class="fullscreenAnchor"><i class="fa fa-arrows-alt fa-2x"></i></a></div>');
+ 						$("#viewer-container").html('<img src="'+val+'" id="click360" class="click360-class" height="314" width="500" /><img src="http://static1.squarespace.com/static/5535915ee4b052e5fc121331/t/557c6cece4b0d0b21b85c686/1434217708714/?format=1500w" class="reel-annotation far" id="logo" for-data="viewer" style="height:50px;width:150px;position:absolute;top:0;right:0;" data-start="1" data-end="27"/><div id="info-bar" style="height:30px;width:100%;position:absolute;bottom:0;background: rgba(0,0,0,0.4);color:#FFFFFF;padding-top:10px;"></div>');
+ 					$('#info-bar').append('<div class="fullscreenBtn"><a href="'+val+'" class="fullscreenAnchor"><i class="fa fa-arrows-alt" style="color: #202020;font-size:20px;"></i></a></div>');
  					});
  					// $('#viewer-container').append('<div class="backTo360" id="reverse-btn"><i class="fa fa-undo"></i><br></div>');
  					// createBackTo360Btn();
