@@ -28,7 +28,7 @@ var imageArr = [];
 		function grabJson(idCar){
 			// grab JSON object of images from API
 			// ** change the 6 so idCar once in production
-			$.getJSON('http://ec2-52-25-251-163.us-west-2.compute.amazonaws.com:8080/Sparkilabs-webApp/ResponseJSON?carID='+6).done(function(data) {
+			$.getJSON('http://ec2-52-25-251-163.us-west-2.compute.amazonaws.com:8080/Sparkilabs-webApp/ResponseJSON?carID='+idCar).done(function(data) {
 	    		console.log(data);
 	    		imageObject = data;
 	    		// call functionStack
